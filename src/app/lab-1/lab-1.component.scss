@@ -1,0 +1,75 @@
+.layout {
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  border: 2px solid rgba(78, 76, 77, 0.81);
+  border-top: none;
+
+  .draw {
+    padding: 1rem;
+    background-color: #e6e6e6;
+    border-right: 2px solid rgba(78, 76, 77, 0.81);
+
+    .canvas {
+      background-color: white;
+      flex: 3;
+    }
+  }
+
+  .settings {
+    flex: 1;
+    background-color: whitesmoke;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .input-settings {
+      margin: 1rem auto;
+      user-select: none;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .axis {
+      border: 3px solid rgba(112, 110, 111, 0.6);
+      width: 3rem;
+      font-size: 18px;
+      border-radius: 5px;
+      padding: 0.5rem 1rem;
+
+      &:focus {
+        outline: none;
+        border-color: #00ac00;
+      }
+    }
+
+    .menu-btn {
+      border: 3px solid rgba(112, 110, 111, 0.6);
+      border-radius: 5px;
+      padding: 0.5rem 1rem;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: white;
+      color: rgba(112, 110, 111, 0.7);
+
+      &:focus {
+        outline: none;
+      }
+
+      &:hover {
+        border-color: #00ac00;
+      }
+
+      &:active {
+        border-color: green;
+      }
+    }
+  }
+}
