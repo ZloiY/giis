@@ -26,8 +26,8 @@ export class Lab1Service {
     const length = Math.max(Math.abs(line.x2 - line.x1), Math.abs(line.y2 - line.y1));
     const dx = (line.x2 - line.x1) / length;
     const dy = (line.y2 - line.y1) / length;
-    let x = line.x1 + 0.5 * Math.sign(dx);
-    let y = line.y1 + 0.5 * Math.sign(dy);
+    let x = line.x1 + 0.5;
+    let y = line.y1 + 0.5;
     this.createTile(canvas, Math.floor(x) * tileSize, Math.floor(y) * tileSize, tileSize);
     let pointId = 0;
     while (pointId < length) {
