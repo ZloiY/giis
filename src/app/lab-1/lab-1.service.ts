@@ -1,11 +1,20 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/timeInterval';
+import 'rxjs/add/observable/interval';
 
 @Injectable()
 export class Lab1Service {
 
-  constructor() { }
+  interval = null;
 
-  drawGrid(canvas, tileSize) {
+  constructor() {
+    this.interval = Observable
+      .interval(1000 /*ms*/)
+      .timeInterval();
+  }
+
+  drawGrid(canvas, tileSize: number) {
     const canvasContext = canvas.getContext('2d');
     canvasContext.clearRect(0, 0, canvas.width, canvas.height);
     canvasContext.beginPath();
@@ -22,7 +31,7 @@ export class Lab1Service {
     canvasContext.closePath();
   }
 
-  drawLine(canvas, line, tileSize: number) {
+  drawLine(canvas, line, tileSize: number, debug: boolean = false) {
     const length = Math.max(Math.abs(line.x2 - line.x1), Math.abs(line.y2 - line.y1));
     const dx = (line.x2 - line.x1) / length;
     const dy = (line.y2 - line.y1) / length;
@@ -30,11 +39,21 @@ export class Lab1Service {
     let y = line.y1 + 0.5;
     this.createTile(canvas, Math.floor(x) * tileSize, Math.floor(y) * tileSize, tileSize);
     let pointId = 0;
-    while (pointId < length) {
-      x = x + dx;
-      y = y + dy;
-      this.createTile(canvas, Math.floor(x) * tileSize, Math.floor(y) * tileSize, tileSize);
-      pointId++;
+    if (debug) {
+      this.interval.subscribe(() => {
+        x = x + dx;
+        y = y + dy;
+        this.createTile(canvas, Math.floor(x) * tileSize, Math.floor(y) * tileSize, tileSize);
+        pointId++;
+        pointId < length ? 0 : this.interval.unsubscribe();
+      });
+    } else {
+      while (pointId < length) {
+        x = x + dx;
+        y = y + dy;
+        this.createTile(canvas, Math.floor(x) * tileSize, Math.floor(y) * tileSize, tileSize);
+        pointId++;
+      }
     }
   }
 

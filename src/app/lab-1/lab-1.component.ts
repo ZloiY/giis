@@ -17,7 +17,7 @@ export class Lab1Component {
     this.lab1Service.drawGrid(canvas, tileSize);
   }
 
-  setLine(canvas, x1: number, y1: number, x2: number, y2: number, tileSize: number) {
+  setLine(canvas, x1: number, y1: number, x2: number, y2: number, tileSize: number, debugCheck: boolean) {
     const intTileSize: number = Number(tileSize);
     const intX1: number = Number(x1);
     const intX2: number = Number(x2);
@@ -29,6 +29,6 @@ export class Lab1Component {
       x2: intX2,
       y2: intY2
     };
-    this.lab1Service.drawLine(canvas, line, intTileSize);
+   this.lab1Service.drawLine(canvas, line, intTileSize, debugCheck) ;
   }
 }
