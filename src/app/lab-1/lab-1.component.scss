@@ -1,6 +1,5 @@
 .layout {
   margin: 0;
-  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -8,13 +7,15 @@
   border-top: none;
 
   .draw {
+    flex: 2;
     padding: 1rem;
     background-color: #e6e6e6;
+    overflow: scroll;
+    height: 900px;
     border-right: 2px solid rgba(78, 76, 77, 0.81);
 
     .canvas {
       background-color: white;
-      flex: 3;
     }
   }
 
