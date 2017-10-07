@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Lab1Service } from './lab-1.service';
+import { CanvasService } from '../../@core/data/canvas.service';
 
 @Component({
   selector: 'app-lab-1',
@@ -11,7 +11,7 @@ export class Lab1Component {
   canvasHeight = 600;
   canvasWidth = 800;
 
-  constructor(private lab1Service: Lab1Service) {  }
+  constructor(private lab1Service: CanvasService) {  }
 
   setGrid(canvas, tileSize: number) {
     this.lab1Service.drawGrid(canvas, tileSize);

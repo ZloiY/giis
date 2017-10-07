@@ -5,7 +5,7 @@ import 'rxjs/add/observable/interval';
 import { NGXLogger } from 'ngx-logger';
 
 @Injectable()
-export class Lab1Service {
+export class CanvasService {
 
   interval = null;
 

@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { Lab1Component } from './lab-1/lab-1.component';
-import { Lab1Service } from './lab-1/lab-1.service';
+import { CanvasService } from '../@core/data/canvas.service';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 @NgModule({
@@ -15,7 +15,7 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
     BrowserModule,
     LoggerModule.forRoot({level: NgxLoggerLevel.INFO, serverLogLevel: NgxLoggerLevel.DEBUG}),
   ],
-  providers: [Lab1Service],
+  providers: [CanvasService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
