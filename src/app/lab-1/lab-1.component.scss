@@ -7,7 +7,7 @@
   border-top: none;
 
   .draw {
-    flex: 2;
+    flex: 3;
     padding: 1rem;
     background-color: #e6e6e6;
     overflow: scroll;
@@ -19,14 +19,64 @@
     }
   }
 
-  .settings {
-    flex: 1;
+  .menu {
+    flex: 2;
     background-color: whitesmoke;
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-around;
+
+    .settings-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      .mode-chooser {
+        border: 3px solid rgba(112, 110, 111, 0.6);
+        border-radius: 5px;
+        background-color: white;
+        font-size: 18px;
+        padding: 0.5rem 1rem;
+
+        &:hover {
+          border-color: #00ac00;
+        }
+
+        &:focus {
+          outline: none;
+          border-color: #00ac00;
+        }
+
+        .option {
+          -webkit-appearance: none;
+          font-size: 18px;
+          padding: 0.5rem 1rem;
+          background-color: white;
+          border-left: 3px solid rgba(112, 110, 111, 0.6);
+          border-right: 3px solid rgba(112, 110, 111, 0.6);
+
+          &:hover {
+            background-color: #00ac00;
+            color: white;
+          }
+
+          &:last-child {
+            border-bottom: 3px solid rgba(112, 110, 111, 0.6);
+            border-radius: 5px;
+          }
+        }
+      }
+    }
+
+
+    .settings {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
 
     .input-settings {
       margin: 1rem auto;

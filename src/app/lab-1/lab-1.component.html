@@ -2,11 +2,22 @@
   <div class="draw">
     <canvas class="canvas" #canvas></canvas>
   </div>
-  <div class="settings">
-    <span class="input-settings">Tile size: <input class="axis" [(ngModel)]="tileSize" #inputTileSize></span>
-    <span class="input-settings">X1: <input class="axis" [(ngModel)]="x1Coord"> &nbsp;&nbsp;&nbsp;Y1: <input class="axis" [(ngModel)]="y1Coord"></span>
-    <span class="input-settings">X2: <input class="axis" [(ngModel)]="x2Coord"> &nbsp;&nbsp;&nbsp;Y2: <input class="axis" [(ngModel)]="y2Coord"></span>
-    <span class="input-settings">Enable debug mode: <input type="checkbox" #debugCheck></span>
-    <button class="menu-btn" (click)="setLine(debugCheck.checked)">Draw Line</button>
+  <div class="menu">
+    <div class="settings-header">
+      <span class="input-settings">Tile size: <input class="axis" [(ngModel)]="tileSize" #inputTileSize></span>
+      <span class="input-settings">Choose mode:
+        <select class="mode-chooser">
+          <option value="1">DDA</option>
+          <option value="2">Brezenhem</option>
+          <option value="3">Vu</option>
+        </select>
+      </span>
+    </div>
+    <div class="settings">
+      <span class="input-settings">X1: <input class="axis" [(ngModel)]="x1Coord"> &nbsp;&nbsp;&nbsp;Y1: <input class="axis" [(ngModel)]="y1Coord"></span>
+      <span class="input-settings">X2: <input class="axis" [(ngModel)]="x2Coord"> &nbsp;&nbsp;&nbsp;Y2: <input class="axis" [(ngModel)]="y2Coord"></span>
+      <span class="input-settings">Enable debug mode: <input type="checkbox" #debugCheck></span>
+      <button class="menu-btn" (click)="setLine(debugCheck.checked)">Draw Line</button>
+    </div>
   </div>
 </div>
