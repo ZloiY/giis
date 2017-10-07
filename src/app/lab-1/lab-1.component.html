@@ -1,12 +1,12 @@
 <div class="layout">
   <div class="draw">
-    <canvas class="canvas" [width]="canvasWidth" [height]="canvasHeight" #canvas></canvas>
+    <canvas class="canvas" #canvas></canvas>
   </div>
   <div class="settings">
-    <span class="input-settings">Tile size: <input class="axis" value="10" (blur)="setGrid(canvas, tileSize.value)" #tileSize></span>
-    <span class="input-settings">X1: <input class="axis" #x1Coord> &nbsp;&nbsp;&nbsp;Y1: <input class="axis" #y1Coord></span>
-    <span class="input-settings">X2: <input class="axis" #x2Coord> &nbsp;&nbsp;&nbsp;Y2: <input class="axis" #y2Coord></span>
+    <span class="input-settings">Tile size: <input class="axis" [(ngModel)]="tileSize" #inputTileSize></span>
+    <span class="input-settings">X1: <input class="axis" [(ngModel)]="x1Coord"> &nbsp;&nbsp;&nbsp;Y1: <input class="axis" [(ngModel)]="y1Coord"></span>
+    <span class="input-settings">X2: <input class="axis" [(ngModel)]="x2Coord"> &nbsp;&nbsp;&nbsp;Y2: <input class="axis" [(ngModel)]="y2Coord"></span>
     <span class="input-settings">Enable debug mode: <input type="checkbox" #debugCheck></span>
-    <button class="menu-btn" (click)="setLine(canvas, x1Coord.value, y1Coord.value, x2Coord.value, y2Coord.value, tileSize.value, debugCheck.checked)">Draw Line</button>
+    <button class="menu-btn" (click)="setLine(debugCheck.checked)">Draw Line</button>
   </div>
 </div>

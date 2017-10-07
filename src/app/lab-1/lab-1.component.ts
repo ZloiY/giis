@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Observable } from 'rxjs/Rx';
+import 'rxjs/add/operator/debounce';
+import 'rxjs/add/operator/throttle';
+
 import { CanvasService } from '../../@core/data/canvas.service';
 
 @Component({
@@ -6,29 +10,53 @@ import { CanvasService } from '../../@core/data/canvas.service';
   templateUrl: './lab-1.component.html',
   styleUrls: ['./lab-1.component.scss']
 })
-export class Lab1Component {
+export class Lab1Component implements OnInit, OnDestroy {
 
-  canvasHeight = 600;
-  canvasWidth = 800;
+  @ViewChild('canvas')canvasRef: ElementRef;
+  @ViewChild('inputTileSize')inputRef: ElementRef;
+  tileSize = 15;
+  x1Coord = 0;
+  x2Coord = 0;
+  y1Coord = 0;
+  y2Coord = 0;
+  debounce: any;
 
-  constructor(private lab1Service: CanvasService) {  }
+  constructor(private canvasService: CanvasService) { }
 
-  setGrid(canvas, tileSize: number) {
-    this.lab1Service.drawGrid(canvas, tileSize);
+  ngOnInit() {
+    this.canvasRef.nativeElement.width = window.innerWidth;
+    this.canvasRef.nativeElement.height = window.innerHeight;
+    const drawGrid = Observable.interval(50)
+      .subscribe(val => {
+        this.canvasService.drawGrid(this.canvasRef.nativeElement, this.tileSize);
+        drawGrid.unsubscribe();
+      });
+    this.debounce = Observable.fromEvent(this.inputRef.nativeElement, 'input')
+      .debounceTime(1000)
+      .map(() => {
+        if (this.tileSize === 0 || this.tileSize < 5) {
+          this.tileSize = 10;
+        }
+      })
+      .subscribe(val => this.canvasService.drawGrid(this.canvasRef.nativeElement, this.tileSize));
   }
 
-  setLine(canvas, x1: number, y1: number, x2: number, y2: number, tileSize: number, debugCheck: boolean) {
-    const intTileSize: number = Number(tileSize);
-    const intX1: number = Number(x1);
-    const intX2: number = Number(x2);
-    const intY1: number = Number(y1);
-    const intY2: number = Number(y2);
+  ngOnDestroy() {
+    this.debounce.unsubscribe();
+  }
+
+  setLine(debugCheck: boolean) {
+    const intTileSize: number = Number(this.tileSize);
+    const intX1: number = Number(this.x1Coord);
+    const intX2: number = Number(this.x2Coord);
+    const intY1: number = Number(this.y1Coord);
+    const intY2: number = Number(this.y2Coord);
     const line = {
       x1: intX1,
       y1: intY1,
       x2: intX2,
       y2: intY2
     };
-   this.lab1Service.drawLine(canvas, line, intTileSize, debugCheck) ;
+   this.canvasService.drawLine(this.canvasRef.nativeElement, line, intTileSize, debugCheck) ;
   }
 }
