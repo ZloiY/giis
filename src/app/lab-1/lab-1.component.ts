@@ -20,10 +20,20 @@ export class Lab1Component implements OnInit, OnDestroy {
   y1Coord = 0;
   y2Coord = 0;
   debounce: any;
+  currentMode: any;
+  drawingMode = {
+    ddaMode: function (canvas, line, intTileSize, debugCheck) {
+      this.canvasService.drawLine(canvas, line, intTileSize, debugCheck);
+    },
+    brezenhemMode: function (canvas, line, intTileSize, debugCheck) {
+      this.canvasService.drawBrezenhemLine(canvas, line, intTileSize, debugCheck);
+    },
+  };
 
   constructor(private canvasService: CanvasService) { }
 
   ngOnInit() {
+    this.currentMode = this.drawingMode.ddaMode;
     this.canvasRef.nativeElement.width = window.innerWidth;
     this.canvasRef.nativeElement.height = window.innerHeight;
     const drawGrid = Observable.interval(50)
@@ -57,6 +67,6 @@ export class Lab1Component implements OnInit, OnDestroy {
       x2: intX2,
       y2: intY2
     };
-   this.canvasService.drawLine(this.canvasRef.nativeElement, line, intTileSize, debugCheck) ;
+   this.currentMode(this.canvasRef.nativeElement, line, intTileSize, debugCheck);
   }
 }
