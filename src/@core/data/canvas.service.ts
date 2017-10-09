@@ -66,6 +66,49 @@ export class CanvasService {
     }
   }
 
+  drawBrezenhemLine(canvas, line, tileSize: number, debug: boolean = false) {
+    const length = Math.max(Math.abs(line.x2 - line.x1), Math.abs(line.y2 - line.y1));
+    const dx = line.x2 - line.x1;
+    const dy = line.y2 - line.y1;
+    let x = line.x1;
+    let y = line.y1;
+    let e = 2 * dy - dx;
+    this.logger.info('Start drawing...');
+    this.logger.info(`x:${x}, y:${y}`);
+    this.createTile(canvas, x * tileSize, y * tileSize, tileSize);
+    let iterationId = 0;
+    if (debug) {
+      const subscription = this.interval.subscribe(() => {
+      if (e >= 0) {
+        y += 1;
+        e -= 2 * dx;
+      }
+      x += 1;
+      e += 2 * dy;
+      iterationId++;
+      this.logger.info(`x:${x}, y:${y}`);
+      this.createTile(canvas, x * tileSize, y * tileSize, tileSize);
+        if (iterationId >= length) {
+          subscription.unsubscribe();
+          this.logger.info('End drawing.');
+        }
+      });
+    } else {
+      while (iterationId >= length) {
+        if (e >= 0) {
+          y += 1;
+          e -= 2 * dx;
+        }
+        x += 1;
+        e += 2 * dy;
+        iterationId++;
+        this.logger.info(`x:${x}, y:${y}`);
+        this.createTile(canvas, x * tileSize, y * tileSize, tileSize);
+      }
+      this.logger.info('End drawing.');
+    }
+  }
+
   createTile(canvas, xAxis: number, yAxis: number, tileSize: number) {
     const context = canvas.getContext('2d');
     context.fillRect(xAxis, yAxis, tileSize, tileSize);
