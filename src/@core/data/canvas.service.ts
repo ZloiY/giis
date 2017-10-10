@@ -68,8 +68,10 @@ export class CanvasService {
 
   drawBrezenhemLine(canvas, line, tileSize: number, debug: boolean = false) {
     const length = Math.max(Math.abs(line.x2 - line.x1), Math.abs(line.y2 - line.y1));
-    const dx = line.x2 - line.x1;
-    const dy = line.y2 - line.y1;
+    const dx = Math.abs(line.x2 - line.x1);
+    const dy = Math.abs(line.y2 - line.y1);
+    const signX = Math.sign(line.x2 - line.x1);
+    const signY = Math.sign(line.y2 - line.y1);
     let x = line.x1;
     let y = line.y1;
     let e = 2 * dy - dx;
@@ -80,10 +82,10 @@ export class CanvasService {
     if (debug) {
       const subscription = this.interval.subscribe(() => {
       if (e >= 0) {
-        y += 1;
+        y += signY;
         e -= 2 * dx;
       }
-      x += 1;
+      x += signX;
       e += 2 * dy;
       iterationId++;
       this.logger.info(`x:${x}, y:${y}`);
@@ -94,12 +96,12 @@ export class CanvasService {
         }
       });
     } else {
-      while (iterationId >= length) {
+      while (iterationId <= length) {
         if (e >= 0) {
-          y += 1;
+          y += signY;
           e -= 2 * dx;
         }
-        x += 1;
+        x += signX;
         e += 2 * dy;
         iterationId++;
         this.logger.info(`x:${x}, y:${y}`);
