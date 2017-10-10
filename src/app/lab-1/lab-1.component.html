@@ -6,9 +6,9 @@
     <div class="settings-header">
       <span class="input-settings">Tile size: <input class="axis" [(ngModel)]="tileSize" #inputTileSize></span>
       <span class="input-settings">Choose mode:
-        <select class="mode-chooser">
-          <option (click)="currentMode = drawingMode.ddaMode()" value="1">DDA</option>
-          <option (click)="currentMode = drawingMode.brezenhemMode()" value="2">Brezenhem</option>
+        <select (change)="chooseDebug($event.target.value)" class="mode-chooser">
+          <option value="1">DDA</option>
+          <option value="2">Brezenhem</option>
           <option value="3">Vu</option>
         </select>
       </span>

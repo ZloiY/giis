@@ -51,6 +51,19 @@ export class Lab1Component implements OnInit, OnDestroy {
       .subscribe(val => this.canvasService.drawGrid(this.canvasRef.nativeElement, this.tileSize));
   }
 
+  chooseDebug(value) {
+    switch (value) {
+      case '1': {
+        this.currentMode = this.drawingMode.ddaMode;
+        break;
+      }
+      case '2': {
+        this.currentMode = this.drawingMode.brezenhemMode;
+        break;
+      }
+    }
+  }
+
   ngOnDestroy() {
     this.debounce.unsubscribe();
   }
@@ -67,6 +80,7 @@ export class Lab1Component implements OnInit, OnDestroy {
       x2: intX2,
       y2: intY2
     };
-   this.currentMode(this.canvasRef.nativeElement, line, intTileSize, debugCheck);
+    console.log(this.currentMode);
+    this.currentMode(this.canvasRef.nativeElement, line, intTileSize, debugCheck);
   }
 }
