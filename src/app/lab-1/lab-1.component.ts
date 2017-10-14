@@ -23,12 +23,15 @@ export class Lab1Component implements OnInit, OnDestroy {
   debounce: any;
   currentMode: any;
   drawingMode = {
-    ddaMode: function (canvas, line, intTileSize, debugCheck) {
-      this.canvasService.drawLine(canvas, line, intTileSize, debugCheck);
+    ddaMode: function (line, debugCheck) {
+      this.canvasService.drawLine(line, debugCheck);
     },
-    brezenhemMode: function (canvas, line, intTileSize, debugCheck) {
-      this.canvasService.drawBrezenhemLine(canvas, line, intTileSize, debugCheck);
+    brezenhemMode: function (line, debugCheck) {
+      this.canvasService.drawBrezenhemLine(line, debugCheck);
     },
+    vuMode: function (line, debugCheck) {
+      this.canvasService.drawVuLine(line, debugCheck);
+    }
   };
 
   constructor(private canvasService: CanvasService) { }
@@ -39,7 +42,9 @@ export class Lab1Component implements OnInit, OnDestroy {
     this.canvasRef.nativeElement.height = window.innerHeight;
     const drawGrid = Observable.interval(50)
       .subscribe(val => {
-        this.canvasService.drawGrid(this.canvasRef.nativeElement, this.tileSize);
+        this.canvasService.setCanvas(this.canvasRef.nativeElement);
+        this.canvasService.setTileSize(this.tileSize);
+        this.canvasService.drawGrid();
         drawGrid.unsubscribe();
       });
     this.debounce = Observable.fromEvent(this.inputRef.nativeElement, 'input')
@@ -48,8 +53,9 @@ export class Lab1Component implements OnInit, OnDestroy {
         if (this.tileSize === 0 || this.tileSize < 5) {
           this.tileSize = 10;
         }
+        this.canvasService.setTileSize(this.tileSize);
       })
-      .subscribe(val => this.canvasService.drawGrid(this.canvasRef.nativeElement, this.tileSize));
+      .subscribe(val => this.canvasService.drawGrid());
   }
 
   chooseDebug(value) {
@@ -62,6 +68,9 @@ export class Lab1Component implements OnInit, OnDestroy {
         this.currentMode = this.drawingMode.brezenhemMode;
         break;
       }
+      case '3': {
+        this.currentMode = this.drawingMode.vuMode;
+      }
     }
   }
 
@@ -70,16 +79,15 @@ export class Lab1Component implements OnInit, OnDestroy {
   }
 
   setLine(debugCheck: boolean) {
-    const intTileSize: number = Number(this.tileSize);
     const intX1: number = Number(this.x1Coord);
     const intX2: number = Number(this.x2Coord);
     const intY1: number = Number(this.y1Coord);
     const intY2: number = Number(this.y2Coord);
     const line = new Line(intX1, intX2, intY1, intY2);
-    this.currentMode(this.canvasRef.nativeElement, line, intTileSize, debugCheck);
+    this.currentMode(line, debugCheck);
   }
 
   removeLines() {
-    this.canvasService.drawGrid(this.canvasRef.nativeElement, this.tileSize);
+    this.canvasService.drawGrid();
   }
 }
