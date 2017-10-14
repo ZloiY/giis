@@ -4,6 +4,7 @@ import 'rxjs/add/operator/debounce';
 import 'rxjs/add/operator/throttle';
 
 import { CanvasService } from '../../@core/data/canvas.service';
+import { Line } from '../../@core/line.model';
 
 @Component({
   selector: 'app-lab-1',
@@ -74,12 +75,7 @@ export class Lab1Component implements OnInit, OnDestroy {
     const intX2: number = Number(this.x2Coord);
     const intY1: number = Number(this.y1Coord);
     const intY2: number = Number(this.y2Coord);
-    const line = {
-      x1: intX1,
-      y1: intY1,
-      x2: intX2,
-      y2: intY2
-    };
+    const line = new Line(intX1, intX2, intY1, intY2);
     this.currentMode(this.canvasRef.nativeElement, line, intTileSize, debugCheck);
   }
 
