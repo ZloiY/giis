@@ -80,7 +80,10 @@ export class Lab1Component implements OnInit, OnDestroy {
       x2: intX2,
       y2: intY2
     };
-    console.log(this.currentMode);
     this.currentMode(this.canvasRef.nativeElement, line, intTileSize, debugCheck);
+  }
+
+  removeLines() {
+    this.canvasService.drawGrid(this.canvasRef.nativeElement, this.tileSize);
   }
 }

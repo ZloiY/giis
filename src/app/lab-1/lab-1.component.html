@@ -17,7 +17,10 @@
       <span class="input-settings">X1: <input class="axis" [(ngModel)]="x1Coord"> &nbsp;&nbsp;&nbsp;Y1: <input class="axis" [(ngModel)]="y1Coord"></span>
       <span class="input-settings">X2: <input class="axis" [(ngModel)]="x2Coord"> &nbsp;&nbsp;&nbsp;Y2: <input class="axis" [(ngModel)]="y2Coord"></span>
       <span class="input-settings">Enable debug mode: <input type="checkbox" #debugCheck></span>
-      <button class="menu-btn" (click)="setLine(debugCheck.checked)">Draw Line</button>
+      <div>
+        <button class="menu-btn" (click)="setLine(debugCheck.checked)">Draw Line</button>
+        <button class="menu-btn" (click)="removeLines()">Remove Lines</button>
+      </div>
     </div>
   </div>
 </div>
