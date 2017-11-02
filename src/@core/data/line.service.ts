@@ -147,17 +147,14 @@ export class LineService extends BaseCanvasService {
     let x = line.x1;
     let y = line.y1 + angle * params.signY;
     const subscription = this.interval.subscribe(() => {
-      if (iterationId % 2) {
-        x += params.signX;
-        this.logger.info(`x: ${x}, y: ${Math.floor(y)}`);
-        this.createTile(x, Math.floor(y), 1 - (y % 1));
-      } else {
-        this.logger.info(`x: ${x}, y: ${Math.floor(y) + 1}`);
-        this.createTile(x, (Math.floor(y) + 1), y % 1);
-        y += angle * params.signY;
-      }
+      x += params.signX;
+      this.logger.info(`x: ${x}, y: ${Math.floor(y)}`);
+      this.createTile(x, Math.floor(y), 1 - (y % 1));
+      this.logger.info(`x: ${x}, y: ${Math.floor(y) + 1}`);
+      this.createTile(x, (Math.floor(y) + 1), y % 1);
+      y += angle * params.signY;
       iterationId++;
-      if (iterationId > length * 2) {
+      if (iterationId > length) {
         subscription.unsubscribe();
         this.logger.info(`x: ${line.x2}, y: ${line.y2}`);
         this.createTile(line.x2, line.y2);
@@ -195,14 +192,12 @@ export class LineService extends BaseCanvasService {
     let y = line.y1;
     let iterationId = 1;
     const subscription = this.interval.subscribe(() => {
-      if (iterationId) {
-        y += params.signY;
-        this.logger.info(`x: ${Math.floor(x)}, y: ${y}`);
-        this.createTile(Math.floor(x), y, 1 - (x % 1));
-        this.logger.info(`x: ${Math.floor(x) + 1}, y: ${y}`);
-        this.createTile((Math.floor(x) + 1), y, x % 1);
-        x += angle * params.signX;
-      }
+      y += params.signY;
+      this.logger.info(`x: ${Math.floor(x)}, y: ${y}`);
+      this.createTile(Math.floor(x), y, 1 - (x % 1));
+      this.logger.info(`x: ${Math.floor(x) + 1}, y: ${y}`);
+      this.createTile((Math.floor(x) + 1), y, x % 1);
+      x += angle * params.signX;
       iterationId++;
       if (iterationId > length) {
         subscription.unsubscribe();
