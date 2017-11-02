@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CanvasService } from './canvas.service';
+import { LineService } from './line.service';
 
 @NgModule({
   imports: [CommonModule],
-  providers: [CanvasService],
+  providers: [LineService],
 })
 export class DataModule {}

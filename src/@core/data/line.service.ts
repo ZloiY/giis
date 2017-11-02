@@ -1,47 +1,17 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/timeInterval';
 import 'rxjs/add/observable/interval';
 
 import { NGXLogger } from 'ngx-logger';
 import { Line } from '../line.model';
+import { BaseCanvasService } from './base-canvas.service';
 
 @Injectable()
-export class CanvasService {
+export class LineService extends BaseCanvasService {
 
-  private interval = null;
-  private canvas: HTMLCanvasElement;
-  private tileSize: number;
-
-  constructor(private logger: NGXLogger) {
-    this.interval = Observable
-      .interval(1000 /*ms*/)
-      .timeInterval();
-  }
-
-  setTileSize(tileSize) {
-    this.tileSize = tileSize;
-  }
-
-  setCanvas(canvas) {
-    this.canvas = canvas;
-  }
-
-  drawGrid() {
-    const canvasContext = this.canvas.getContext('2d');
-    canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    canvasContext.beginPath();
-    for (let horizCoord = 0; horizCoord < this.canvas.width; horizCoord += Number(this.tileSize)) {
-      canvasContext.moveTo(horizCoord, 0);
-      canvasContext.lineTo(horizCoord, this.canvas.height);
-    }
-    for (let vertCoord = 0; vertCoord < this.canvas.height; vertCoord += Number(this.tileSize)) {
-      canvasContext.moveTo(0, vertCoord);
-      canvasContext.lineTo(this.canvas.width, vertCoord);
-    }
-    canvasContext.stroke();
-    canvasContext.closePath();
+  constructor(private log: NGXLogger) {
+    super(log);
   }
 
   drawLine(line: Line, debug: boolean = false) {
@@ -108,7 +78,7 @@ export class CanvasService {
         }
       });
     } else {
-      while (iterationId <= length) {
+      while (iterationId < length) {
         if (e >= 0) {
           y += signY;
           e -= 2 * dx;
@@ -225,29 +195,20 @@ export class CanvasService {
     let y = line.y1;
     let iterationId = 1;
     const subscription = this.interval.subscribe(() => {
-      if (iterationId % 2) {
+      if (iterationId) {
         y += params.signY;
         this.logger.info(`x: ${Math.floor(x)}, y: ${y}`);
         this.createTile(Math.floor(x), y, 1 - (x % 1));
-      } else {
         this.logger.info(`x: ${Math.floor(x) + 1}, y: ${y}`);
         this.createTile((Math.floor(x) + 1), y, x % 1);
         x += angle * params.signX;
       }
       iterationId++;
-      if (iterationId > length * 2) {
+      if (iterationId > length) {
         subscription.unsubscribe();
         this.logger.info(`x: ${line.x2}, y: ${line.y2}`);
         this.createTile(line.x2, line.y2);
       }
     });
-  }
-
-
-  createTile(xCoord: number, yCoord: number, opacity: number = 1) {
-    const context = this.canvas.getContext('2d');
-    context.fillStyle = `rgba(0, 0, 0, ${opacity})`;
-    console.log(opacity);
-    context.fillRect(xCoord * this.tileSize, yCoord * this.tileSize, this.tileSize, this.tileSize);
   }
 }

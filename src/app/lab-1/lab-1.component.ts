@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/debounce';
 import 'rxjs/add/operator/throttle';
 
-import { CanvasService } from '../../@core/data/canvas.service';
+import { LineService } from '../../@core/data/line.service';
 import { Line } from '../../@core/line.model';
 
 @Component({
@@ -24,17 +24,17 @@ export class Lab1Component implements OnInit, OnDestroy {
   currentMode: any;
   drawingMode = {
     ddaMode: function (line, debugCheck) {
-      this.canvasService.drawLine(line, debugCheck);
+      this.lineService.drawLine(line, debugCheck);
     },
     brezenhemMode: function (line, debugCheck) {
-      this.canvasService.drawBrezenhemLine(line, debugCheck);
+      this.lineService.drawBrezenhemLine(line, debugCheck);
     },
     vuMode: function (line, debugCheck) {
-      this.canvasService.drawVuLine(line, debugCheck);
+      this.lineService.drawVuLine(line, debugCheck);
     }
   };
 
-  constructor(private canvasService: CanvasService) { }
+  constructor(private lineService: LineService) { }
 
   ngOnInit() {
     this.currentMode = this.drawingMode.ddaMode;
@@ -42,9 +42,9 @@ export class Lab1Component implements OnInit, OnDestroy {
     this.canvasRef.nativeElement.height = window.innerHeight;
     const drawGrid = Observable.interval(50)
       .subscribe(val => {
-        this.canvasService.setCanvas(this.canvasRef.nativeElement);
-        this.canvasService.setTileSize(this.tileSize);
-        this.canvasService.drawGrid();
+        this.lineService.setCanvas(this.canvasRef.nativeElement);
+        this.lineService.setTileSize(this.tileSize);
+        this.lineService.drawGrid();
         drawGrid.unsubscribe();
       });
     this.debounce = Observable.fromEvent(this.inputRef.nativeElement, 'input')
@@ -53,9 +53,9 @@ export class Lab1Component implements OnInit, OnDestroy {
         if (this.tileSize === 0 || this.tileSize < 5) {
           this.tileSize = 10;
         }
-        this.canvasService.setTileSize(this.tileSize);
+        this.lineService.setTileSize(this.tileSize);
       })
-      .subscribe(val => this.canvasService.drawGrid());
+      .subscribe(val => this.lineService.drawGrid());
   }
 
   chooseDebug(value) {
@@ -88,6 +88,6 @@ export class Lab1Component implements OnInit, OnDestroy {
   }
 
   removeLines() {
-    this.canvasService.drawGrid();
+    this.lineService.drawGrid();
   }
 }
