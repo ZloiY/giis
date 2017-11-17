@@ -6,13 +6,19 @@ import { AppComponent } from './app.component';
 import { Lab1Component } from './lab-1/lab-1.component';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { DataModule } from '../@core/data/data.module';
+import { Lab2Component } from './lab-2/lab-2.component';
+import {AppRoutingModule} from "./app-routing.module";
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
     AppComponent,
-    Lab1Component
+    Lab1Component,
+    Lab2Component
   ],
   imports: [
+    AppRoutingModule,
+    CommonModule,
     BrowserModule,
     FormsModule,
     DataModule,
