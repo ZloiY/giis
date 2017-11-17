@@ -4,22 +4,22 @@
   </div>
   <div class="menu">
     <div class="settings-header">
-      <span class="input-settings">Tile size: <input class="axis" [(ngModel)]="tileSize" #inputTileSize></span>
-      <span class="input-settings">Choose mode:
+      <span class="input-settings">Размер клетки: <input class="axis" [(ngModel)]="tileSize" #inputTileSize></span>
+      <span class="input-settings">Выбор режима:
         <select (change)="chooseDebug($event.target.value)" class="mode-chooser">
-          <option value="1">DDA</option>
-          <option value="2">Brezenhem</option>
-          <option value="3">Vu</option>
+          <option value="1">ЦДА</option>
+          <option value="2">Брезенхем</option>
+          <option value="3">Ву</option>
         </select>
       </span>
     </div>
     <div class="settings">
       <span class="input-settings">X1: <input class="axis" [(ngModel)]="x1Coord"> &nbsp;&nbsp;&nbsp;Y1: <input class="axis" [(ngModel)]="y1Coord"></span>
       <span class="input-settings">X2: <input class="axis" [(ngModel)]="x2Coord"> &nbsp;&nbsp;&nbsp;Y2: <input class="axis" [(ngModel)]="y2Coord"></span>
-      <span class="input-settings">Enable debug mode: <input type="checkbox" #debugCheck></span>
+      <span class="input-settings">Режим отладчика: <input type="checkbox" #debugCheck></span>
       <div>
-        <button class="menu-btn" (click)="setLine(debugCheck.checked)">Draw Line</button>
-        <button class="menu-btn" (click)="removeLines()">Remove Lines</button>
+        <button class="menu-btn" (click)="setLine(debugCheck.checked)">Нарисовать линию</button>
+        <button class="menu-btn" (click)="removeLines()">Удалить линии</button>
       </div>
     </div>
   </div>

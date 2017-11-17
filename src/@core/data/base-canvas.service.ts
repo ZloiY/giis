@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
+
 import { Observable } from 'rxjs/Observable';
 import { NGXLogger } from 'ngx-logger';
+
+import 'rxjs/add/observable/interval';
+import 'rxjs/add/operator/timeInterval';
+
 
 @Injectable()
 export class BaseCanvasService {
@@ -41,7 +46,6 @@ export class BaseCanvasService {
   createTile(xCoord: number, yCoord: number, opacity: number = 1) {
     const context = this.canvas.getContext('2d');
     context.fillStyle = `rgba(0, 0, 0, ${opacity})`;
-    console.log(opacity);
-    context.fillRect(xCoord * this.tileSize, yCoord * this.tileSize, this.tileSize, this.tileSize);
+    context.fillRect(xCoord * this.tileSize, this.canvas.height - yCoord * this.tileSize, this.tileSize, this.tileSize);
   }
 }

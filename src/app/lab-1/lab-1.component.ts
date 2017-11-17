@@ -5,6 +5,8 @@ import 'rxjs/add/operator/throttle';
 
 import { LineService } from '../../@core/data/line.service';
 import { Line } from '../../@core/line.model';
+import { BrezenhemService } from '../../@core/data/brezenhem.service';
+import { WuService } from '../../@core/data/wu.service';
 
 @Component({
   selector: 'app-lab-1',
@@ -27,14 +29,20 @@ export class Lab1Component implements OnInit, OnDestroy {
       this.lineService.drawLine(line, debugCheck);
     },
     brezenhemMode: function (line, debugCheck) {
-      this.lineService.drawBrezenhemLine(line, debugCheck);
+      this.brezenhemService.setCanvas(this.canvasRef.nativeElement);
+      this.brezenhemService.setTileSize(this.tileSize);
+      this.brezenhemService.drawBrezenhemLine(line, debugCheck);
     },
     vuMode: function (line, debugCheck) {
-      this.lineService.drawVuLine(line, debugCheck);
+      this.wuService.setCanvas(this.canvasRef.nativeElement);
+      this.wuService.setTileSize(this.tileSize);
+      this.wuService.drawVuLine(line, debugCheck);
     }
   };
 
-  constructor(private lineService: LineService) { }
+  constructor(private lineService: LineService,
+              private brezenhemService: BrezenhemService,
+              private wuService: WuService) { }
 
   ngOnInit() {
     this.currentMode = this.drawingMode.ddaMode;
@@ -58,6 +66,10 @@ export class Lab1Component implements OnInit, OnDestroy {
       .subscribe(val => this.lineService.drawGrid());
   }
 
+  ngOnDestroy() {
+    this.debounce.unsubscribe();
+  }
+
   chooseDebug(value) {
     switch (value) {
       case '1': {
@@ -72,10 +84,6 @@ export class Lab1Component implements OnInit, OnDestroy {
         this.currentMode = this.drawingMode.vuMode;
       }
     }
-  }
-
-  ngOnDestroy() {
-    this.debounce.unsubscribe();
   }
 
   setLine(debugCheck: boolean) {
