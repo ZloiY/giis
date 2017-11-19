@@ -46,6 +46,6 @@ export class BaseCanvasService {
   createTile(xCoord: number, yCoord: number, opacity: number = 1) {
     const context = this.canvas.getContext('2d');
     context.fillStyle = `rgba(0, 0, 0, ${opacity})`;
-    context.fillRect(xCoord * this.tileSize, this.canvas.height - yCoord * this.tileSize, this.tileSize, this.tileSize);
+    context.fillRect(xCoord * this.tileSize, this.canvas.height - (yCoord * this.tileSize), this.tileSize, this.tileSize);
   }
 }

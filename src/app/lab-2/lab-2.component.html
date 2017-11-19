@@ -1,3 +1,19 @@
-<p>
-  lab-2 works!
-</p>
+<div class="layout">
+  <div class="draw">
+    <canvas class="canvas" #canvas></canvas>
+  </div>
+  <div class="menu">
+    <div class="settings-header">
+      <span class="input-settings">Размер клетки: <input class="axis" [(ngModel)]="tileSize" #inputTileSize></span>
+    </div>
+    <div class="settings">
+      <span class="input-settings">X1: <input class="axis" [(ngModel)]="x1Coord"> &nbsp;&nbsp;&nbsp;Y1: <input class="axis" [(ngModel)]="y1Coord"></span>
+      <span class="input-settings">X2: <input class="axis" [(ngModel)]="x2Coord"> &nbsp;&nbsp;&nbsp;Y2: <input class="axis" [(ngModel)]="y2Coord"></span>
+      <span class="input-settings">Режим отладчика: <input type="checkbox" #debugCheck></span>
+      <div>
+        <button class="menu-btn" (click)="setLine(debugCheck.checked)">Нарисовать</button>
+        <button class="menu-btn" (click)="removeLines()">Очистить</button>
+      </div>
+    </div>
+  </div>
+</div>
