@@ -47,38 +47,39 @@ export class CircleService extends BaseCanvasService {
   }
 
   drawEllipse(x: number, y: number, a: number, b: number, debug: boolean = false) {
-    let mX = 0, mY = b;
+    let mX = 0, mY = b, gap = 0, draw = false;
     const aSqr = a * a;
     const bSqr = b * b;
-    let delta = 4 * bSqr * ((mX + 1) * (mX + 1)) + aSqr * ((2 * mX - 1) * (2 * mX - 1)) - 4 * aSqr * bSqr;
-    while (aSqr * (2 * mY - 1) > 2 * bSqr * (mX + 1)) {
+    let delta = aSqr + bSqr - 2 * aSqr * b;
+    debug ? this.interval = Observable.interval(1000 /*ms*/).timeInterval() : this.interval = Observable.interval(0 /*ms*/).timeInterval();
+    const subscription = this.interval.subscribe(() => {
+      draw = false
+      if (mY <= 0) { subscription.unsubscribe() }
       this.createTile(x + mX, y + mY);
       this.createTile(x + mX, y - mY);
       this.createTile(x - mX, y - mY);
       this.createTile(x - mX, y + mY);
       if (delta < 0) {
-        mX++;
-        delta += 4 * bSqr * (2 * mX + 3);
-      } else {
-        mX++;
-        delta -= 8 * aSqr * (mY - 1) + 4 * bSqr * (2 * mX + 3);
-        mY--;
+        gap = 2 * (delta + aSqr * mY) - 1;
+        if (gap <= 0) {
+          mX++;
+          delta += bSqr * (2 * mX  + 1);
+          draw = true;
+        }
       }
-    }
-    delta = bSqr * ((2 * mX + 1) * (2 * mX + 1)) + 4 * aSqr * ((mY + 1) * (mY + 1)) - 4 * aSqr * bSqr;
-    while (mY + 1 !== 0) {
-      this.createTile(x + mX, y + mY);
-      this.createTile(x + mX, y - mY);
-      this.createTile(x - mX, y - mY);
-      this.createTile(x - mX, y + mY);
-      if (delta < 0) {
-        mY--;
-        delta += 4 * aSqr * (2 * mY + 3);
-      } else {
-        mY--;
-        delta -= 8 * bSqr * (mX + 1) + 4 * aSqr * (2 * mY + 3);
-        mX++;
+      if (delta > 0) {
+        gap = 2 * (delta - bSqr * mX) - 1;
+        if (gap > 0) {
+          mY--;
+          delta += aSqr * (1 - 2 * mY);
+          draw = true;
+        }
       }
-    }
+      if (!draw) {
+        mX++;
+        mY--;
+        delta += bSqr * (2 * mX + 1) + aSqr * (1 - 2 * mY);
+      }
+    });
   }
 }
