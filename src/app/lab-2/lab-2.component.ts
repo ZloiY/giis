@@ -18,6 +18,21 @@ export class Lab2Component implements OnInit, OnDestroy {
   y1Coord = 0;
   y2Coord = 0;
   debounce = null;
+  currentMode = null;
+  drawingMode = {
+    circleMode: function (x, y, radius, debugCheck) {
+      this.circleService.drawCircle(x, y, radius, debugCheck);
+    },
+    ellipsMode: function (x, y, a, debugCheck, b) {
+      this.circleService.drawEllipse(x, y, a, debugCheck, b);
+    },
+    hyperbolaMode: function (x, y, a, debugCheck, b) {
+      this.circleService.drawHyperbola(x, y, a, debugCheck, b);
+    },
+    parabolaMode: function (x, y, a, debugCheck) {
+      this.circleService.drawParabola(x, y, a, debugCheck);
+    }
+  };
 
   constructor(private circleService: CircleService) { }
 
@@ -40,15 +55,36 @@ export class Lab2Component implements OnInit, OnDestroy {
         this.circleService.setTileSize(this.tileSize);
       })
       .subscribe(val => this.circleService.drawGrid());
+    this.currentMode = this.drawingMode.circleMode;
   }
 
   ngOnDestroy() {
     this.debounce.unsubscribe();
   }
 
-  setLine(debug) {
-    // this.circleService.drawCircle(Number(this.x1Coord), Number(this.y1Coord), Number(this.x2Coord), debug);
-    this.circleService.drawEllipse(Number(this.x1Coord), Number(this.y1Coord), Number(this.x2Coord), Number(this.y2Coord));
+  chooseDrawingMode(value) {
+    switch (value) {
+      case '1': {
+        this.currentMode = this.drawingMode.circleMode;
+        break;
+      }
+      case '2': {
+        this.currentMode = this.drawingMode.ellipsMode;
+        break;
+      }
+      case '3': {
+        this.currentMode = this.drawingMode.hyperbolaMode;
+        break;
+      }
+      case '4': {
+        this.currentMode = this.drawingMode.parabolaMode;
+        break;
+      }
+    }
+  }
+
+  setLine(x: number, y: number, a: number, debug: boolean = false, b?: number) {
+    this.currentMode(Number(x), Number(y), Number(a), debug, Number(b));
   }
 
   removeLines() {

@@ -5,13 +5,31 @@
   <div class="menu">
     <div class="settings-header">
       <span class="input-settings">Размер клетки: <input class="axis" [(ngModel)]="tileSize" #inputTileSize></span>
+      <span class="input-settings">Выбор режима:
+        <select (change)="chooseDrawingMode($event.target.value)" class="mode-chooser">
+          <option value="1">Окружность</option>
+          <option value="2">Элипс</option>
+          <option value="3">Гипербола</option>
+          <option value="4">Парабола</option>
+        </select>
+      </span>
     </div>
     <div class="settings">
-      <span class="input-settings">X1: <input class="axis" [(ngModel)]="x1Coord"> &nbsp;&nbsp;&nbsp;Y1: <input class="axis" [(ngModel)]="y1Coord"></span>
-      <span class="input-settings">X2: <input class="axis" [(ngModel)]="x2Coord"> &nbsp;&nbsp;&nbsp;Y2: <input class="axis" [(ngModel)]="y2Coord"></span>
+      <div *ngIf="currentMode === drawingMode.ellipsMode || currentMode === drawingMode.hyperbolaMode || currentMode === null">
+        <span class="input-settings">X: <input class="axis" [(ngModel)]="x1Coord"> &nbsp;&nbsp;&nbsp;Y: <input class="axis" [(ngModel)]="y1Coord"></span>
+        <span class="input-settings">A: <input class="axis" [(ngModel)]="x2Coord"> &nbsp;&nbsp;&nbsp;B: <input class="axis" [(ngModel)]="y2Coord"></span>
+      </div>
+      <div *ngIf="currentMode === drawingMode.circleMode">
+        <span class="input-settings">X: <input class="axis" [(ngModel)]="x1Coord"> &nbsp;&nbsp;&nbsp;Y: <input class="axis" [(ngModel)]="y1Coord"></span>
+        <span class="input-settings">Радиус: <input class="axis" [(ngModel)]="x2Coord"></span>
+      </div>
+      <div *ngIf="currentMode === drawingMode.parabolaMode">
+        <span class="input-settings">X: <input class="axis" [(ngModel)]="x1Coord"> &nbsp;&nbsp;&nbsp;Y: <input class="axis" [(ngModel)]="y1Coord"></span>
+        <span class="input-settings">A: <input class="axis" [(ngModel)]="x2Coord"></span>
+      </div>
       <span class="input-settings">Режим отладчика: <input type="checkbox" #debugCheck></span>
       <div>
-        <button class="menu-btn" (click)="setLine(debugCheck.checked)">Нарисовать</button>
+        <button class="menu-btn" (click)="setLine(x1Coord, y1Coord, x2Coord, debugCheck.checked, y2Coord)">Нарисовать</button>
         <button class="menu-btn" (click)="removeLines()">Очистить</button>
       </div>
     </div>
