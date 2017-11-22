@@ -46,15 +46,14 @@ export class CircleService extends BaseCanvasService {
     });
   }
 
-  drawEllipse(x: number, y: number, a: number, b: number, debug: boolean = false) {
+  drawEllipse(x: number, y: number, a: number, debug: boolean = false, b: number) {
     let mX = 0, mY = b, gap = 0, draw = false;
-    const aSqr = a * a;
-    const bSqr = b * b;
+    const aSqr = a * a, bSqr = b * b;
     let delta = aSqr + bSqr - 2 * aSqr * b;
     debug ? this.interval = Observable.interval(1000 /*ms*/).timeInterval() : this.interval = Observable.interval(0 /*ms*/).timeInterval();
     const subscription = this.interval.subscribe(() => {
-      draw = false
-      if (mY <= 0) { subscription.unsubscribe() }
+      draw = false;
+      if (mY <= 0) { subscription.unsubscribe(); }
       this.createTile(x + mX, y + mY);
       this.createTile(x + mX, y - mY);
       this.createTile(x - mX, y - mY);
@@ -80,6 +79,79 @@ export class CircleService extends BaseCanvasService {
         mY--;
         delta += bSqr * (2 * mX + 1) + aSqr * (1 - 2 * mY);
       }
+    });
+  }
+
+  drawHyperbola(x: number, y: number, a: number, debug: boolean = false, b: number) {
+    let mY = a, mX = 0, distance = 0, step = 0, draw = false;
+    const aSqr = a * a, bSqr = b * b, limit = 50;
+    let error = bSqr + 2 * bSqr * a - aSqr;
+    debug ? this.interval = Observable.interval(1000 /*ms*/).timeInterval() : this.interval = Observable.interval(0 /*ms*/).timeInterval();
+    const subscription = this.interval.subscribe(() => {
+      draw = false;
+      if (step >= limit) { subscription.unsubscribe(); }
+      this.createTile(x + mX, y + mY);
+      this.createTile(x + mX, y - mY);
+      this.createTile(x - mX, y - mY);
+      this.createTile(x - mX, y + mY);
+      if (error > 0) {
+        distance = 2 * error - bSqr * (2 * mX + 1);
+        if (distance > 0) {
+          mY++;
+          error -= aSqr * (2 * mY + 1);
+          draw = true;
+        }
+      }
+      if (error < 0) {
+        distance = 2 * error + 2 * mX * bSqr - 1;
+        if (distance <= 0) {
+          mX++;
+          error += bSqr * (2 * mX + 1);
+          draw = true;
+        }
+      }
+      if (!draw) {
+        mY++;
+        mX++;
+        error += bSqr * (2 * mX + 1) - aSqr * (2 * mY + 1);
+      }
+      step++;
+    });
+  }
+
+  drawParabola(x: number, y: number, a: number, debug: boolean = false) {
+    let mY = 0, mX = 0, distance = 0, step = 0;
+    const limit = 50;
+    let error = 1 - 2 * a;
+    debug ? this.interval = Observable.interval(1000 /*ms*/).timeInterval() : this.interval = Observable.interval(0 /*ms*/).timeInterval();
+    const subscription = this.interval.subscribe(() => {
+      if (step >= limit) { subscription.unsubscribe(); }
+      this.createTile(x + mX, y + mY);
+      this.createTile(x + mX, y - mY - 1);
+      if (error > 0) {
+        distance = 2 * (error - mY) - 1;
+        mX++;
+        if (distance > 0) {
+          error -= 2 * a;
+        } else {
+          mY++;
+          error += 2 * mY + 1 - 2 * a;
+        }
+      } else if (error < 0) {
+        distance = 2 * (error + a);
+        mY++;
+        if (distance <= 0) {
+          error += 2 * mY + 1;
+        } else {
+          mX++;
+          error += 2 * mY + 1 - 2 * a;
+        }
+      } else {
+        mY++;
+        mX++;
+        error += 2 * mY + 1 - 2 * a;
+      }
+      step++;
     });
   }
 }
