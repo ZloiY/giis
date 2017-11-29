@@ -1,0 +1,43 @@
+<div class="layout">
+  <div class="draw">
+    <canvas class="canvas" #canvas></canvas>
+  </div>
+  <div class="menu">
+    <div class="settings-header">
+      <span class="input-settings">Размер клетки: <input class="axis" [(ngModel)]="tileSize" #inputTileSize></span>
+      <span class="input-settings">Выбор режима:
+        <select (change)="chooseDrawingMode($event.target.value)" class="mode-chooser">
+          <option value="1">Эрмит</option>
+          <option value="2">Безье</option>
+          <option value="3">Б-Сплайн</option>
+        </select>
+      </span>
+    </div>
+    <div class="settings">
+      <div class="settings" *ngIf="currentMode === drawingMode.hermiteMode">
+        <span class="input-settings">P1 &nbsp; x: <input class="axis" [(ngModel)]="p1.x"> &nbsp;&nbsp;&nbsp; y: <input class="axis" [(ngModel)]="p1.y"></span>
+        <span class="input-settings">P4 &nbsp; x: <input class="axis" [(ngModel)]="p4.x"> &nbsp;&nbsp;&nbsp; y: <input class="axis" [(ngModel)]="p4.y"></span>
+        <span class="input-settings">R1 &nbsp; x: <input class="axis" [(ngModel)]="r1.x"> &nbsp;&nbsp;&nbsp; y: <input class="axis" [(ngModel)]="r1.y"></span>
+        <span class="input-settings">R4 &nbsp; x: <input class="axis" [(ngModel)]="r4.x"> &nbsp;&nbsp;&nbsp; y: <input class="axis" [(ngModel)]="r4.y"></span>
+      </div>
+      <div class="settings" *ngIf="currentMode === drawingMode.bezireMode">
+        <span class="input-settings">P1 &nbsp; x: <input class="axis" [(ngModel)]="p1.x"> &nbsp;&nbsp;&nbsp; y: <input class="axis" [(ngModel)]="p1.y"></span>
+        <span class="input-settings">P2 &nbsp; x: <input class="axis" [(ngModel)]="p4.x"> &nbsp;&nbsp;&nbsp; y: <input class="axis" [(ngModel)]="p4.y"></span>
+        <span class="input-settings">P3 &nbsp; x: <input class="axis" [(ngModel)]="r1.x"> &nbsp;&nbsp;&nbsp; y: <input class="axis" [(ngModel)]="r1.y"></span>
+        <span class="input-settings">P4 &nbsp; x: <input class="axis" [(ngModel)]="r4.x"> &nbsp;&nbsp;&nbsp; y: <input class="axis" [(ngModel)]="r4.y"></span>
+      </div>
+      <div class="b-spline-settings" *ngIf="currentMode === drawingMode.bSplineMode">
+        <span class="input-settings" *ngFor="let tile of bSplineTiles; let i = index">
+          P{{i + 1}} &nbsp; x: <input class="axis" [(ngModel)]="tile.x"> &nbsp;&nbsp;&nbsp; y: <input class="axis" [(ngModel)]="tile.y">
+        </span>
+        <button class="menu-btn" (click)="addBSplineTile()">Добавить точку</button>
+        <button class="menu-btn" (click)="setBSpline()">Нарисовать</button>
+      </div>
+      <span class="input-settings">Режим отладчика: <input type="checkbox" #debugCheck></span>
+      <div>
+        <button *ngIf="currentMode !== drawingMode.bSplineMode" class="menu-btn" (click)="setLine(p1, p4, r1, r4)">Нарисовать</button>
+        <button class="menu-btn" (click)="removeLines()">Очистить</button>
+      </div>
+    </div>
+  </div>
+</div>

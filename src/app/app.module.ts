@@ -9,12 +9,14 @@ import { DataModule } from '../@core/data/data.module';
 import { Lab2Component } from './lab-2/lab-2.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {CommonModule} from "@angular/common";
+import { Lab3Component } from './lab-3/lab-3.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     Lab1Component,
-    Lab2Component
+    Lab2Component,
+    Lab3Component
   ],
   imports: [
     AppRoutingModule,
